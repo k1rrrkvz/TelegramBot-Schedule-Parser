@@ -3,11 +3,8 @@ from loader import dp, bot
 
 from keyboards.reply import menu
 from keyboards.inline import week, groups
-
 from chrome_driver.parserXL import dataShankursky
 from chrome_driver.main import runParser
-#from chrome_driver.linkScraper import linkCatcher
-id_day = None
 
 
 @dp.message_handler(commands=['start'])
@@ -127,8 +124,3 @@ async def group_11O(call: types.CallbackQuery):
 async def start_message(message: types.Message):
     await message.answer('Режим теста', reply_markup=menu.menu)
     await message.answer(f'{dataShankursky}', reply_markup=groups.choiceGroupKB)
-
-
-
-
-   

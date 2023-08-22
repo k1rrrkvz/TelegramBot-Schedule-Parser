@@ -2,19 +2,22 @@ from aiogram import types
 from loader import dp, bot
 
 from keyboards.reply import menu
-from keyboards.inline import week, groups
+from keyboards.inline import groups
 
-from chrome_driver.parserXL import dataShankursky
-from chrome_driver.main import runParser
-#from chrome_driver.linkScraper import linkCatcher
-id_day = None
+from crawler.main import WebScraperFileDownloader, ExcelParser
+from crawler.parserXL import readDataShankursky
+
+
+scraper = WebScraperFileDownloader()
+parser = ExcelParser()
 
 
 @dp.message_handler(commands=['start'])
 async def start_message(message: types.Message):
-    runParser()
     await message.answer('Добро пожаловать!', reply_markup=menu.defUpgrade())
     await message.answer('Выберите группу:', reply_markup=groups.defaultGroups())
+    scraper.get_links()
+    scraper.download_files()
 
 @dp.message_handler()
 async def call_menu(message: types.Message):
@@ -25,9 +28,8 @@ async def call_menu(message: types.Message):
 @dp.callback_query_handler(text_contains='b0')
 async def group_11O(call: types.CallbackQuery):
     await bot.delete_message(call.from_user.id, call.message.message_id)
-
     
-    lessons = dataShankursky[0]
+    lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[0]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
     mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
@@ -47,7 +49,7 @@ async def group_11O(call: types.CallbackQuery):
 async def group_11O(call: types.CallbackQuery):
     await bot.delete_message(call.from_user.id, call.message.message_id)
 
-    lessons = dataShankursky[1]
+    lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[1]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
     mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
@@ -67,7 +69,7 @@ async def group_11O(call: types.CallbackQuery):
 async def group_11O(call: types.CallbackQuery):
     await bot.delete_message(call.from_user.id, call.message.message_id)
 
-    lessons = dataShankursky[2]
+    lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[2]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
     mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
@@ -87,7 +89,7 @@ async def group_11O(call: types.CallbackQuery):
 async def group_11O(call: types.CallbackQuery):
     await bot.delete_message(call.from_user.id, call.message.message_id)
 
-    lessons = dataShankursky[3]
+    lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[3]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
     mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
@@ -106,7 +108,7 @@ async def group_11O(call: types.CallbackQuery):
 async def group_11O(call: types.CallbackQuery):
     await bot.delete_message(call.from_user.id, call.message.message_id)
 
-    lessons = dataShankursky[4]
+    lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[4]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
     mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
@@ -122,11 +124,10 @@ async def group_11O(call: types.CallbackQuery):
                            \n📔Пятница\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n{fridayLessons}''', reply_markup=groups.defaultGroups())
 
 
-    
 @dp.message_handler(commands=['test'])
 async def start_message(message: types.Message):
     await message.answer('Режим теста', reply_markup=menu.menu)
-    await message.answer(f'{dataShankursky}', reply_markup=groups.choiceGroupKB)
+    await message.answer(readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1'), reply_markup=groups.choiceGroupKB)
 
 
 

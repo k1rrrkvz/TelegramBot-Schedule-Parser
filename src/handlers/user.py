@@ -2,6 +2,7 @@ from aiogram import types
 from loader import dp, bot
 
 from keyboards.reply import menu
+<<<<<<< HEAD
 from keyboards.inline import groups
 
 from crawler.main import WebScraperFileDownloader, ExcelParser
@@ -10,6 +11,11 @@ from crawler.parserXL import readDataShankursky
 
 scraper = WebScraperFileDownloader()
 parser = ExcelParser()
+=======
+from keyboards.inline import week, groups
+from chrome_driver.parserXL import dataShankursky
+from chrome_driver.main import runParser
+>>>>>>> cb6c3055f791e682d726ce34f3c48bd0da4fe414
 
 
 @dp.message_handler(commands=['start'])
@@ -127,9 +133,13 @@ async def group_11O(call: types.CallbackQuery):
 @dp.message_handler(commands=['test'])
 async def start_message(message: types.Message):
     await message.answer('Режим теста', reply_markup=menu.menu)
+<<<<<<< HEAD
     await message.answer(readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1'), reply_markup=groups.choiceGroupKB)
 
 
 
 
    
+=======
+    await message.answer(f'{dataShankursky}', reply_markup=groups.choiceGroupKB)
+>>>>>>> cb6c3055f791e682d726ce34f3c48bd0da4fe414

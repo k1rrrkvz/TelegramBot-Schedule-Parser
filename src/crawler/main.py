@@ -1,14 +1,9 @@
 import os
-import requests
-import datetime
-
-import openpyxl
-
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
 import re
 import requests
+import datetime
+import openpyxl
+
 from bs4 import BeautifulSoup
 
 

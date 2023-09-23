@@ -7,54 +7,54 @@ import openpyxl
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+import re
+import requests
+from bs4 import BeautifulSoup
+
 
 
 class WebScraperFileDownloader:
 
     def get_links(self):
 
-        driver = webdriver.Chrome()
-        driver.get("https://spo-13.mskobr.ru/uchashimsya/raspisanie-kanikuly")
-        links = driver.find_elements(By.XPATH, "//p/a[contains(@href, '.xlsx')]")
+        link = 'https://spo-13.mskobr.ru/uchashimsya/raspisanie-kanikuly'
+        response = requests.get(link)
+        soup = BeautifulSoup(response.text, 'html.parser')
 
-        links_set = []
-        for link in links:
-            href = link.get_attribute("href")
-            links_set.append(href)
+        links = []
+        for a in soup.find_all('a', href=True):
+            url = a['href']
+            parts = re.split(r'/', url)
+            if 'files' in parts and 'attach_files' in parts:
+                links.append(url)
 
-        driver.quit()
+        i = len(links) - 1
+        url = f"https://spo-13.mskobr.ru/{links[i]}"
+        return url
 
-        result = [(link) for link in links_set]
-        #return result
 
-
-    def download_files(self, url, file_count, name):
+    def download_file(self, url, name):
 
         folder_path = f"src\\chrome_driver\\data\\{name}"
 
         response = requests.get(url)
 
         if response.status_code == 200:
-
-            for count in range(1, file_count+1):
-
-                file_name = f"file{count}_course_{name}.xlsx"
-                file_path = os.path.join(folder_path, file_name)
-                with open(file_path, "wb") as file:
-                    file.write(response.content)
-                print(f"Файл успешно скачан. Время: {datetime.datetime.now().time()} Код сервера: {response.status_code}")
+            file_name = f"{name}.xlsx"
+            file_path = os.path.join(folder_path, file_name)
+            with open(file_path, "wb") as file:
+                file.write(response.content)
+            print(f"File downloaded successfully. Time: {datetime.datetime.now().time()} Status Code: {response.status_code}")
         else:
-            print(f"Ошибка при скачивании файла: {url} \nВремя: {datetime.datetime.now().time()} Код сервера: {response.status_code}")
+            print(f"Error downloading file: {url}\nTime: {datetime.datetime.now().time()} Status Code: {response.status_code}")
 
-# Работу этого класса временно заменяет файл crawler.parserXL.py 
-class ExcelParser:
+class ExcelDataParser():
 
-    def parse_cells(self, path, sheet):
-
+    def readDataShankursky(self, path, sheet):
+        
         wb = openpyxl.load_workbook(path)
         sheet = wb[sheet]
         
-        # Матрица с диапазонами ячеек
         ranges = [
             (4, 11),
             (12, 19),
@@ -65,7 +65,7 @@ class ExcelParser:
 
         # Общее расписание из всех чанков
         timetable = []
-
+        
                                                                                 # работа с конкретной группой 
         for column in range(3, 12, 2):
                                                                                 # проход по всем диапазонам ячеек
@@ -80,5 +80,5 @@ class ExcelParser:
                                                                                 # Добавляем каждый список (чанк) в общий список    
                 timetable.append(chunk)
 
-        #return timetable
+        return timetable
 

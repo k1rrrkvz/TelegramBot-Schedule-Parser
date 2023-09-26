@@ -1,7 +1,8 @@
 # College Schedule Bot
 
 [![GitHub stars](https://img.shields.io/github/stars/k1rrrkvz/TelegramBot-Schedule-Parser?style=flat-square)](https://github.com/k1rrrkvz/TelegramBot-Schedule-Parser/stargazers)
-![Bot Demo](demo.gif)
+
+![image](https://github.com/k1rrrkvz/TelegramBot-Schedule-Parser/assets/126238623/d45eb356-7861-4c7a-84c4-e749e5360f8e)
 
 ## Примечание
 Эта версия работает со старым расписанием. Ждите апдейт.

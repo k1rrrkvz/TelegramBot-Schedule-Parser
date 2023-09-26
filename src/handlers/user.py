@@ -4,12 +4,12 @@ from loader import dp, bot
 from keyboards.reply import menu
 from keyboards.inline import groups
 
-from crawler.main import WebScraperFileDownloader, ExcelParser
+from crawler.cernel import WebScraperFileDownloader, ExcelDataParser
 from crawler.parserXL import readDataShankursky
 
 
 scraper = WebScraperFileDownloader()
-parser = ExcelParser()
+parser = ExcelDataParser()
 
 
 @dp.message_handler(commands=['start'])
@@ -32,11 +32,11 @@ async def group_11O(call: types.CallbackQuery):
     lessons = readDataShankursky('src\\crawler\\data\\Shankursky\\file1_course_Shankursky.xlsx', 'Лист1')[0]
     lessons = [lesson if lesson is not None else "Нет предметов" for lesson in lessons]
 
-    mondayLessons = '\n'.join([f"▫️ {i+1}. {lesson}" for i, lesson in enumerate(lessons)])
-    tuesdayLessons = '\n'.join([f"▫️ {i+2}.{lesson}" for i, lesson in enumerate(lessons)])
-    wednesdayLessons = '\n'.join([f"▫️ {i+3}.{lesson}" for i, lesson in enumerate(lessons)])
-    thursdayLessons = '\n'.join([f"▫️ {i+4}.{lesson}" for i, lesson in enumerate(lessons)])
-    fridayLessons = '\n'.join([f"▫️ {i+5}.{lesson}" for i, lesson in enumerate(lessons)])
+    mondayLessons = '\n'.join([f"{i+1}. {lesson}" for i, lesson in enumerate(lessons)])
+    tuesdayLessons = '\n'.join([f"{i+1}. {lesson}" for i, lesson in enumerate(lessons)])
+    wednesdayLessons = '\n'.join([f"{i+1}. {lesson}" for i, lesson in enumerate(lessons)])
+    thursdayLessons = '\n'.join([f"{i+1}. {lesson}" for i, lesson in enumerate(lessons)])
+    fridayLessons = '\n'.join([f"{i+1}. {lesson}" for i, lesson in enumerate(lessons)])
 
     await bot.send_message(call.from_user.id, f'''👤 Группа 11O\n\n📋 Расписание:\n\n📕Понедельник\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n{mondayLessons}
                            \n📗Вторник\n¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n{tuesdayLessons}
